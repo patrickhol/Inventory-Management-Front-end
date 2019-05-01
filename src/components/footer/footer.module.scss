@@ -1,0 +1,11 @@
+.wrapper {
+  border-top: gray solid 1px;
+  margin-right: 150px;
+  margin-left: 150px;
+  display: grid;
+  grid-template-columns: 140px 1fr 200px;
+  align-items: center;
+}
+p {
+  font-size: 12px;
+}
