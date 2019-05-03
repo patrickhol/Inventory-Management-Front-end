@@ -5,6 +5,7 @@ const HomeList = ({ ...item }) => (
   <>
     <div className={styles.wrapper}>
       <div />
+
       <RowInventory {...item} />
     </div>
     <div />
