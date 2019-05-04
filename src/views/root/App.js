@@ -18,7 +18,7 @@ class App extends Component {
   Auth = new AuthService()
   state = {
     appFromMyProfile: null,
-    filterString: 'Laptop',
+    filterString: '',
     isLogged: false,
     item: [],
     editingItem: [],
@@ -106,7 +106,7 @@ class App extends Component {
           alert(err)
         })
     } else if (userData.type === 'register') {
-      this.Auth.signup(userData.email, userData.email, userData.name)
+      this.Auth.signup(userData.email, userData.password, userData.name)
         .then(res => {
           this.setState({
             isLogged: true
