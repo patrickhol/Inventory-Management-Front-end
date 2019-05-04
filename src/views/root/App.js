@@ -18,6 +18,7 @@ class App extends Component {
   Auth = new AuthService()
   state = {
     appFromMyProfile: null,
+    filterString: 'Laptop',
     isLogged: false,
     item: [],
     editingItem: [],
@@ -211,6 +212,13 @@ class App extends Component {
     })
     this.handleIsLogged()
   }
+  onFilterChange = event => {
+    const value = event.currentTarget.value
+
+    this.setState({
+      filterString: value
+    })
+  }
 
   render() {
     const { isModalOpen, isLogged } = this.state
@@ -223,7 +231,8 @@ class App extends Component {
       handleSubmitEditItem: this.handleSubmitEditItem,
       openModalEditItem: this.openModalEditItem,
       deleteItem: this.deleteItem,
-      openModalAddItem: this.openModalAddItem
+      openModalAddItem: this.openModalAddItem,
+      onFilterChange: this.onFilterChange
     }
     return (
       <BrowserRouter>

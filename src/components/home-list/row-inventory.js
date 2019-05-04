@@ -1,12 +1,21 @@
 import React from 'react'
 import AppContext from '../../context'
-
+import styles from './row-inventory.module.scss'
 const RowInventory = ({ item }) => {
   return (
     <AppContext.Consumer>
       {context => (
-        <div>
-          {
+        <>
+          <div>
+            <form>
+              <input
+                className={styles.searchInput}
+                type="text"
+                value={context.filter}
+                onChange={context.onFilterChange}
+                placeholder="Filter..."
+              />
+            </form>
             <table className="table table-striped">
               <thead>
                 <tr>
@@ -34,45 +43,58 @@ const RowInventory = ({ item }) => {
               </thead>
               <tbody>
                 {item.map(item => {
-                  return (
-                    <tr key={item._id.toString()}>
-                      <td>{item.name}</td>
+                  const checkFilteredItemEan =
+                    item.name
+                      .toUpperCase()
+                      .indexOf(context.filterString.toUpperCase()) > -1 ||
+                    item.ean
+                      .toUpperCase()
+                      .indexOf(context.filterString.toUpperCase()) > -1
 
-                      <td>{item.ean}</td>
-                      <td>{item.quantity}</td>
+                  if (checkFilteredItemEan) {
+                    return (
+                      <tr key={item._id.toString()}>
+                        <td>{item.name}</td>
 
-                      <td>{item.price}</td>
-                      <td>
-                        <button
-                          className="btn btn-primary btn-sm"
-                          data-toggle="modal"
-                          data-target="#exampleModal"
-                          onClick={e => context.openModalEditItem(e, item._id)}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          className="btn btn-success btn-sm"
-                          data-toggle="modal"
-                          data-target="#exampleModal"
-                          onClick={e => context.openModalAddItem(e, item._id)}
-                        >
-                          Add
-                        </button>
-                        <button
-                          className="btn btn-danger btn-sm"
-                          onClick={() => context.deleteItem(item._id)}
-                        >
-                          remove
-                        </button>
-                      </td>
-                    </tr>
-                  )
+                        <td>{item.ean}</td>
+                        <td>{item.quantity}</td>
+
+                        <td>{item.price}</td>
+                        <td>
+                          <button
+                            className="btn btn-primary btn-sm"
+                            data-toggle="modal"
+                            data-target="#exampleModal"
+                            onClick={e =>
+                              context.openModalEditItem(e, item._id)
+                            }
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="btn btn-success btn-sm"
+                            data-toggle="modal"
+                            data-target="#exampleModal"
+                            onClick={e => context.openModalAddItem(e, item._id)}
+                          >
+                            Add
+                          </button>
+                          <button
+                            className="btn btn-danger btn-sm"
+                            onClick={() => context.deleteItem(item._id)}
+                          >
+                            remove
+                          </button>
+                        </td>
+                      </tr>
+                    )
+                  }
+                  return null
                 })}
               </tbody>
             </table>
-          }
-        </div>
+          </div>
+        </>
       )}
     </AppContext.Consumer>
   )
