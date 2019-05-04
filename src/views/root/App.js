@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 import Header from '../../components/header/header'
 import Footer from '../../components/footer/footer'
 import HomeView from '../../views/home-view/home-view'
+import FormRegister from '../../components/form-register/form-register'
+import FormLogin from '../../components/form-login/form-login'
 import AppContext from '../../context'
 import Modal from '../../components/modal/modal'
-import AuthService from '../../components/auth-service/auth-service'
+import AuthService from '../../utils/auth-service/auth-service'
+import LoginFirst from '../../components/login-first/login.first'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
 
@@ -14,6 +17,7 @@ const Auth = new AuthService()
 class App extends Component {
   Auth = new AuthService()
   state = {
+    appFromMyProfile: null,
     isLogged: false,
     item: [],
     editingItem: [],
@@ -87,7 +91,7 @@ class App extends Component {
   }
   handleFormSubmit = (e, userData) => {
     e.preventDefault()
-    this.closeModal()
+
     if (userData.type === 'login') {
       this.Auth.login(userData.email, userData.password)
         .then(res => {
@@ -113,7 +117,7 @@ class App extends Component {
         })
     }
   }
-  handleLogin = () => {}
+
   openModalAddItem = (e, id) => {
     e.preventDefault()
     this.setState({
@@ -209,7 +213,8 @@ class App extends Component {
   }
 
   render() {
-    const { isModalOpen } = this.state
+    const { isModalOpen, isLogged } = this.state
+
     const contextElements = {
       ...this.state,
       handleLogout: this.handleLogout,
@@ -223,9 +228,20 @@ class App extends Component {
     return (
       <BrowserRouter>
         <AppContext.Provider value={contextElements}>
-          <Header isLogged={this.state.isLogged} />
+          <Header isLogged={isLogged} handleLogoutFunc={this.handleLogout} />
           <Switch>
-            <Route path="/" exact component={HomeView} />
+            {isLogged ? (
+              <>
+                <Route path="/" exact component={HomeView} />
+                <Redirect exact from="/register" to="/" />
+              </>
+            ) : (
+              <>
+                <Route path="/" exact component={LoginFirst} />
+                <Route path="/login" exact component={FormLogin} />
+                <Route path="/register" exact component={FormRegister} />
+              </>
+            )}
           </Switch>
 
           {isModalOpen && (

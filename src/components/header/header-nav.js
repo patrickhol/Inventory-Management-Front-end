@@ -2,30 +2,22 @@ import React from 'react'
 import styles from './header-nav.module.scss'
 import { NavLink } from 'react-router-dom'
 
-const HeaderNav = isLogged => (
+const HeaderNav = ({ isLogged, handleLogoutFunc }) => (
   <nav>
     <ul className={styles.wrapper}>
       <li className={styles.navItem}>
-        <NavLink
-          exact
-          to="/"
-          activeClassName={styles.navItemLinkActive}
-          className={styles.navItemLink}
-        >
-          Home
-        </NavLink>
-
-        {!isLogged ? (
-          <NavLink
-            exact
-            to="/logout"
-            activeClassName={styles.navItemLinkActive}
-            className={styles.navItemLink}
-          >
-            Logout
-          </NavLink>
+        {isLogged ? (
+          <button onClick={handleLogoutFunc}>Logout</button>
         ) : (
           <>
+            <NavLink
+              exact
+              to="/"
+              activeClassName={styles.navItemLinkActive}
+              className={styles.navItemLink}
+            >
+              Home
+            </NavLink>
             <NavLink
               exact
               to="/login"

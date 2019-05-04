@@ -1,0 +1,18 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 140px 1fr 120px;
+  align-items: stretch;
+  padding: 20px 10px;
+  min-width: 500px;
+  min-height: 400px;
+}
+.noLogged {
+    font-size: 1.6em;
+    color: darkgrey;
+    display: block;
+    width: 100%;
+    margin-top: 100px;
+    text-align: center;
+    height: 250px;
+  }
+  

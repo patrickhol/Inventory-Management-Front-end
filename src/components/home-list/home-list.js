@@ -1,12 +1,15 @@
 import React from 'react'
 import styles from './home-list.module.scss'
 import RowInventory from './row-inventory'
-const HomeList = ({ ...item }) => (
+const HomeList = ({ isLoggedIn, ...item }) => (
   <>
     <div className={styles.wrapper}>
       <div />
-
-      <RowInventory {...item} />
+      {!isLoggedIn ? (
+        <RowInventory {...item} />
+      ) : (
+        <h3 className={styles.noLogged}>Pleas Login or Registerfirst!</h3>
+      )}
     </div>
     <div />
   </>
