@@ -17,11 +17,11 @@ const Auth = new AuthService()
 class App extends Component {
   Auth = new AuthService()
   state = {
-    appFromMyProfile: null,
     filterString: '',
     isLogged: false,
     item: [],
     editingItem: [],
+    fetchItemData: false,
     isModalOpen: false,
     editItem: false,
     loading: true
@@ -101,6 +101,7 @@ class App extends Component {
           })
 
           console.log('You are logged in ')
+          this.fetchItemDataNow()
         })
         .catch(err => {
           alert(err)
@@ -112,6 +113,7 @@ class App extends Component {
             isLogged: true
           })
           console.log('You are registered')
+          this.fetchItemDataNow()
         })
         .catch(err => {
           alert(err)
@@ -188,7 +190,7 @@ class App extends Component {
       editItem: false
     })
   }
-  componentDidMount = () => {
+  fetchItemDataNow = () => {
     fetch('/api/item')
       .then(res => res.json())
       .then(data =>
@@ -197,8 +199,28 @@ class App extends Component {
           loading: false
         })
       )
+
     this.handleIsLogged()
   }
+  componentWillMount = () => {
+    this.handleIsLogged()
+  }
+
+  componentDidMount = () => {
+    this.handleIsLogged()
+    if (!this.state.fetchItemData && this.state.isLogged) {
+      fetch('/api/item')
+        .then(res => res.json())
+        .then(data =>
+          this.setState({
+            item: data.data,
+            loading: false,
+            fetchItemData: true
+          })
+        )
+    }
+  }
+
   handleIsLogged = () => {
     if (this.Auth.loggedIn()) {
       this.setState({ isLogged: true })
@@ -206,9 +228,16 @@ class App extends Component {
   }
   handleLogout = () => {
     Auth.logout()
-    let nowy = null
     this.setState({
-      appFromMyProfile: nowy
+      appFromMyProfile: null,
+      filterString: '',
+      isLogged: false,
+      item: [],
+      editingItem: [],
+      fetchItemData: false,
+      isModalOpen: false,
+      editItem: false,
+      loading: true
     })
     this.handleIsLogged()
   }
