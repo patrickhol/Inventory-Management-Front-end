@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import Header from '../../components/header/header'
 import Footer from '../../components/footer/footer'
 import HomeView from '../../views/home-view/home-view'
@@ -270,8 +270,9 @@ class App extends Component {
           <Switch>
             {isLogged ? (
               <>
+                <Route path="/login" exact component={FormLogin} />
+                <Route path="/register" exact component={FormRegister} />
                 <Route path="/" exact component={HomeView} />
-                <Redirect exact from="/register" to="/" />
               </>
             ) : (
               <>

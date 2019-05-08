@@ -28,7 +28,7 @@ class FormAddItem extends React.Component {
   }
 
   render() {
-    const { type } = this.state
+    const { type, name, ean, quantity, price } = this.state
 
     return (
       <AppContext.Consumer>
@@ -42,7 +42,7 @@ class FormAddItem extends React.Component {
             >
               <Input
                 onChange={this.handleInputChange}
-                value={this.state.name}
+                value={name}
                 name="name"
                 label="Name"
                 type="text"
@@ -51,7 +51,7 @@ class FormAddItem extends React.Component {
 
               <Input
                 onChange={this.handleInputChange}
-                value={this.state.ean}
+                value={ean}
                 name="ean"
                 label="Ean"
                 type="number"
@@ -59,7 +59,7 @@ class FormAddItem extends React.Component {
               />
               <Input
                 onChange={this.handleInputChange}
-                value={this.state.quantity}
+                value={quantity}
                 name="quantity"
                 label="Quantity"
                 type="number"
@@ -67,7 +67,7 @@ class FormAddItem extends React.Component {
               />
               <Input
                 onChange={this.handleInputChange}
-                value={this.state.price}
+                value={price}
                 name="price"
                 label="Price"
                 type="number"

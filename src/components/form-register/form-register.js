@@ -3,6 +3,7 @@ import AppContext from '../../context'
 import styles from './form-register.module.scss'
 import Input from '../input/input'
 import Title from '../title/title'
+import { Redirect } from 'react-router-dom'
 
 const types = {
   register: 'register'
@@ -27,43 +28,46 @@ class FormRegister extends React.Component {
   }
 
   render() {
-    const { type } = this.state
+    const { type, email, password, title } = this.state
 
     return (
       <AppContext.Consumer>
         {context => (
-          <div className={styles.wrapper}>
-            <Title>{descriptions[type]}</Title>
-            <form
-              autoComplete="on"
-              className={styles.form}
-              onSubmit={e => context.handleFormSubmit(e, this.state)}
-            >
-              <Input
-                onChange={this.handleInputChange}
-                value={this.state.email}
-                name="email"
-                label={type === types.email ? 'Email' : 'Email'}
-              />
+          <>
+            {context.isLogged && <Redirect exact from="/login" to="/" />}
+            <div className={styles.wrapper}>
+              <Title>{descriptions[type]}</Title>
+              <form
+                autoComplete="on"
+                className={styles.form}
+                onSubmit={e => context.handleFormSubmit(e, this.state)}
+              >
+                <Input
+                  onChange={this.handleInputChange}
+                  value={email}
+                  name="email"
+                  label="Email"
+                />
 
-              <Input
-                onChange={this.handleInputChange}
-                value={this.state.password}
-                type="password"
-                name="password"
-                label={type === types.password ? 'Your Password' : 'Password'}
-              />
+                <Input
+                  onChange={this.handleInputChange}
+                  value={password}
+                  type="password"
+                  name="password"
+                  label="Password"
+                />
 
-              <Input
-                onChange={this.handleInputChange}
-                value={this.state.title}
-                name="name"
-                label={type === types.name ? 'Your Name' : 'Name'}
-              />
+                <Input
+                  onChange={this.handleInputChange}
+                  value={title}
+                  name="name"
+                  label="Name"
+                />
 
-              <button>Register</button>
-            </form>
-          </div>
+                <button>Register</button>
+              </form>
+            </div>
+          </>
         )}
       </AppContext.Consumer>
     )
