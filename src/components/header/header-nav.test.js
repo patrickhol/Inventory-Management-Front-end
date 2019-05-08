@@ -3,14 +3,14 @@ import { shallow } from 'enzyme'
 import { expect } from 'chai'
 import HeaderNav from './header-nav'
 
-describe('<HeaderNav />', () => {
+describe('<HeaderNav 1 />', () => {
   it('renders Logout', () => {
-    const wrapper = shallow(<HeaderNav isLogged={true} />)
+    const wrapper = shallow(<HeaderNav isLogged />)
     expect(wrapper.find('button').text()).to.contain('Logout')
   })
 })
 
-describe('<HeaderNav />', () => {
+describe('<HeaderNav 2/>', () => {
   it('renders Login', () => {
     const wrapper = shallow(<HeaderNav isLogged={false} />)
     expect(
@@ -22,7 +22,7 @@ describe('<HeaderNav />', () => {
   })
 })
 
-describe('<HeaderNav />', () => {
+describe('<HeaderNav 3 />', () => {
   it('renders Register', () => {
     const wrapper = shallow(<HeaderNav isLogged={false} />)
     expect(

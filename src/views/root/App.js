@@ -1,8 +1,9 @@
+/* eslint-disable no-underscore-dangle */
 import React, { Component } from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import Header from '../../components/header/header'
 import Footer from '../../components/footer/footer'
-import HomeView from '../../views/home-view/home-view'
+import HomeView from '../home-view/home-view'
 import FormRegister from '../../components/form-register/form-register'
 import FormLogin from '../../components/form-login/form-login'
 import AppContext from '../../context'
@@ -16,32 +17,38 @@ const Auth = new AuthService()
 
 class App extends Component {
   Auth = new AuthService()
+
   state = {
     filterString: '',
     isLogged: false,
-    item: [],
+    items: [],
     editingItem: [],
     fetchItemData: false,
     isModalOpen: false,
     editItem: false,
     loading: true
   }
+
   handleSubmitEditItem = (e, itemData, id, name, ean, quantity, price) => {
     e.preventDefault()
+    const { items } = this.state
+    let newItemData = itemData
     const inputName = itemData.name ? itemData.name : name
     const inputEan = itemData.ean ? itemData.ean : ean
     const inputQuantity = itemData.quantity ? itemData.quantity : quantity
     const inputPrice = itemData.price ? itemData.price : price
-    const showIndex = this.state.item.findIndex(item => item._id === id)
-    itemData = {
+    // eslint-disable-next-line no-underscore-dangle
+    const showIndex = items.findIndex(item => item._id === id)
+
+    newItemData = {
       name: inputName,
       ean: inputEan,
       quantity: inputQuantity,
       price: inputPrice
     }
-    var json = JSON.stringify(itemData)
+    const json = JSON.stringify(newItemData)
     // console.log(json)
-    fetch('/api/item/' + id, {
+    fetch(`/api/item/${id}`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
@@ -50,8 +57,8 @@ class App extends Component {
       body: json
     })
 
-    let allItemFromStateMutable = [...this.state.item]
-    let editeOneItem = {
+    const allItemFromStateMutable = [...items]
+    const editeOneItem = {
       ...allItemFromStateMutable[showIndex],
       name: inputName,
       ean: inputEan,
@@ -71,7 +78,7 @@ class App extends Component {
   handleSubmitNewItem = (e, itemData) => {
     e.preventDefault()
 
-    var json = JSON.stringify(itemData)
+    const json = JSON.stringify(itemData)
     fetch('/api/item', {
       headers: {
         Accept: 'application/json',
@@ -82,6 +89,7 @@ class App extends Component {
     })
       .then(res => res.json())
       .then(data => {
+        // eslint-disable-next-line no-param-reassign
         itemData._id = data.data._id
         this.setState(prevState => ({
           [itemData.type]: [...prevState[itemData.type], itemData],
@@ -90,17 +98,18 @@ class App extends Component {
         }))
       })
   }
+
   handleFormSubmit = (e, userData) => {
     e.preventDefault()
 
     if (userData.type === 'login') {
       this.Auth.login(userData.email, userData.password)
-        .then(res => {
+        .then(() => {
           this.setState({
             isLogged: true
           })
 
-          console.log('You are logged in ')
+          // console.log('You are logged in ')
           this.fetchItemDataNow()
         })
         .catch(err => {
@@ -108,11 +117,11 @@ class App extends Component {
         })
     } else if (userData.type === 'register') {
       this.Auth.signup(userData.email, userData.password, userData.name)
-        .then(res => {
+        .then(() => {
           this.setState({
             isLogged: true
           })
-          console.log('You are registered')
+          // console.log('You are registered')
           this.fetchItemDataNow()
         })
         .catch(err => {
@@ -123,17 +132,13 @@ class App extends Component {
 
   openModalAddItem = (e, id) => {
     e.preventDefault()
+    const { items } = this.state
     this.setState({
       isModalOpen: true
     })
 
-    let editingItem = this.state.item
-      .map(b => {
-        return b
-      })
-      .filter(b => {
-        return b._id === id
-      })
+    // eslint-disable-next-line no-underscore-dangle
+    const editingItem = items.map(item => item).filter(item => item._id === id)
 
     this.setState({
       editingItem
@@ -142,6 +147,7 @@ class App extends Component {
 
   openModalEditItem = (e, id) => {
     e.preventDefault()
+    const items = this.state
     this.setState({
       isModalOpen: true,
       editItem: true
@@ -150,13 +156,8 @@ class App extends Component {
     this.setState({
       editItem: true
     })
-    let editingItem = this.state.item
-      .map(b => {
-        return b
-      })
-      .filter(b => {
-        return b._id === id
-      })
+    // eslint-disable-next-line no-underscore-dangle
+    const editingItem = items.map(item => item).filter(item => item._id === id)
 
     this.setState({
       editingItem
@@ -164,15 +165,13 @@ class App extends Component {
   }
 
   deleteItem = id => {
-    let newItemsState = this.state.item
-      .map(b => {
-        return b
-      })
-      .filter(b => {
-        return b._id !== id
-      })
+    const items = this.state
+    const newItemsState = items
+      .map(item => item)
+      // eslint-disable-next-line no-underscore-dangle
+      .filter(item => item._id !== id)
 
-    fetch('/api/item/' + id, {
+    fetch(`/api/item/${id}`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
@@ -184,12 +183,14 @@ class App extends Component {
       item: newItemsState
     })
   }
+
   closeModal = () => {
     this.setState({
       isModalOpen: false,
       editItem: false
     })
   }
+
   fetchItemDataNow = () => {
     fetch('/api/item')
       .then(res => res.json())
@@ -202,13 +203,16 @@ class App extends Component {
 
     this.handleIsLogged()
   }
+
   componentWillMount = () => {
     this.handleIsLogged()
   }
 
   componentDidMount = () => {
     this.handleIsLogged()
-    if (!this.state.fetchItemData && this.state.isLogged) {
+    const { fetchItemData, isLogged } = this.state
+
+    if (!fetchItemData && isLogged) {
       fetch('/api/item')
         .then(res => res.json())
         .then(data =>
@@ -226,6 +230,7 @@ class App extends Component {
       this.setState({ isLogged: true })
     } else this.setState({ isLogged: false })
   }
+
   handleLogout = () => {
     Auth.logout()
     this.setState({
@@ -241,7 +246,9 @@ class App extends Component {
     })
     this.handleIsLogged()
   }
+
   onFilterChange = event => {
+    // eslint-disable-next-line prefer-destructuring
     const value = event.currentTarget.value
 
     this.setState({
@@ -250,7 +257,7 @@ class App extends Component {
   }
 
   render() {
-    const { isModalOpen, isLogged } = this.state
+    const { isModalOpen, isLogged, editItem, editingItem } = this.state
 
     const contextElements = {
       ...this.state,
@@ -286,8 +293,8 @@ class App extends Component {
           {isModalOpen && (
             <Modal
               closeModalFn={this.closeModal}
-              editItem={this.state.editItem}
-              editingItem={this.state.editingItem}
+              editItem={editItem}
+              editingItem={editingItem}
             />
           )}
           <Footer />

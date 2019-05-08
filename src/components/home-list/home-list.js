@@ -1,6 +1,8 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styles from './home-list.module.scss'
 import RowInventory from './row-inventory'
+
 const HomeList = ({ isLoggedIn, ...item }) => (
   <>
     <div className={styles.wrapper}>
@@ -14,5 +16,9 @@ const HomeList = ({ isLoggedIn, ...item }) => (
     <div />
   </>
 )
+
+HomeList.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired
+}
 
 export default HomeList

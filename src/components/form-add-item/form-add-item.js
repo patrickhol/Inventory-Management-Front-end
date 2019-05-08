@@ -74,7 +74,7 @@ class FormAddItem extends React.Component {
                 required
               />
 
-              <button>Add Item</button>
+              <button type="button">Add Item</button>
             </form>
           </div>
         )}
