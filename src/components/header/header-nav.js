@@ -1,13 +1,16 @@
 import React from 'react'
-import styles from './header-nav.module.scss'
+import PropTypes from 'prop-types'
 import { NavLink } from 'react-router-dom'
+import styles from './header-nav.module.scss'
 
 const HeaderNav = ({ isLogged, handleLogoutFunc }) => (
   <nav>
     <ul className={styles.wrapper}>
       <li className={styles.navItem}>
         {isLogged ? (
-          <button onClick={handleLogoutFunc}>Logout</button>
+          <button type="button" onClick={handleLogoutFunc}>
+            Logout
+          </button>
         ) : (
           <>
             <NavLink
@@ -40,5 +43,9 @@ const HeaderNav = ({ isLogged, handleLogoutFunc }) => (
     </ul>
   </nav>
 )
+HeaderNav.propTypes = {
+  isLogged: PropTypes.bool.isRequired,
+  handleLogoutFunc: PropTypes.func.isRequired
+}
 
 export default HeaderNav

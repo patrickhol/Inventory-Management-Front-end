@@ -17,3 +17,13 @@
 - yarn start
 
 ```
+
+### Test
+
+```sh
+
+- yarn test
+
+- yarn test -o --watch
+
+```
