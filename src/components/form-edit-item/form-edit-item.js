@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React from 'react'
 import AppContext from '../../context'
 import styles from './form-edit-item.module.scss'
@@ -5,16 +6,16 @@ import Input from '../input/input'
 import Title from '../title/title'
 
 const types = {
-  item: 'item'
+  items: 'items'
 }
 
 const descriptions = {
-  item: 'Edit Item'
+  items: 'Edit Item'
 }
 
 class FormEditItem extends React.Component {
   state = {
-    type: types.item,
+    type: types.items,
     ean: 0,
     name: '',
     quantity: 0,
@@ -36,7 +37,7 @@ class FormEditItem extends React.Component {
           <div className={styles.wrapper}>
             <Title>{descriptions[type]} </Title>
 
-            {this.props.editingItem.map(item => {
+            {context.editingItem.map(item => {
               return (
                 <form
                   key={item._id}
@@ -86,7 +87,7 @@ class FormEditItem extends React.Component {
                     type="number"
                     required
                   />
-                  <button>Edit Item</button>
+                  <button type="submit">Edit Item</button>
                 </form>
               )
             })}

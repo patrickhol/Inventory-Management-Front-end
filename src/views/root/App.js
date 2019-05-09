@@ -69,7 +69,7 @@ class App extends Component {
     allItemFromStateMutable[showIndex] = editeOneItem
 
     this.setState({
-      item: allItemFromStateMutable,
+      items: allItemFromStateMutable,
       isModalOpen: false,
       editItem: false
     })
@@ -147,7 +147,7 @@ class App extends Component {
 
   openModalEditItem = (e, id) => {
     e.preventDefault()
-    const items = this.state
+    const { items } = this.state
     this.setState({
       isModalOpen: true,
       editItem: true
@@ -165,7 +165,7 @@ class App extends Component {
   }
 
   deleteItem = id => {
-    const items = this.state
+    const { items } = this.state
     const newItemsState = items
       .map(item => item)
       // eslint-disable-next-line no-underscore-dangle
@@ -180,7 +180,7 @@ class App extends Component {
     }).then()
 
     this.setState({
-      item: newItemsState
+      items: newItemsState
     })
   }
 
@@ -196,7 +196,7 @@ class App extends Component {
       .then(res => res.json())
       .then(data =>
         this.setState({
-          item: data.data,
+          items: data.data,
           loading: false
         })
       )
@@ -217,7 +217,7 @@ class App extends Component {
         .then(res => res.json())
         .then(data =>
           this.setState({
-            item: data.data,
+            items: data.data,
             loading: false,
             fetchItemData: true
           })
@@ -237,7 +237,7 @@ class App extends Component {
       appFromMyProfile: null,
       filterString: '',
       isLogged: false,
-      item: [],
+      items: [],
       editingItem: [],
       fetchItemData: false,
       isModalOpen: false,

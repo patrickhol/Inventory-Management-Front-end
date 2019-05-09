@@ -1,7 +1,10 @@
+/* eslint-disable react/button-has-type */
+/* eslint-disable no-underscore-dangle */
 import React from 'react'
 import AppContext from '../../context'
 import styles from './row-inventory.module.scss'
-const RowInventory = ({ item }) => {
+
+const RowInventory = () => {
   return (
     <AppContext.Consumer>
       {context => (
@@ -42,7 +45,7 @@ const RowInventory = ({ item }) => {
                 </tr>
               </thead>
               <tbody>
-                {item.map(item => {
+                {context.items.map(item => {
                   const checkFilteredItemEan =
                     item.name
                       .toUpperCase()
@@ -53,6 +56,7 @@ const RowInventory = ({ item }) => {
 
                   if (checkFilteredItemEan) {
                     return (
+                      // eslint-disable-next-line no-underscore-dangle
                       <tr key={item._id.toString()}>
                         <td>{item.name}</td>
 
@@ -62,6 +66,7 @@ const RowInventory = ({ item }) => {
                         <td>{item.price}</td>
                         <td>
                           <button
+                            type="button"
                             className="btn btn-primary btn-sm"
                             data-toggle="modal"
                             data-target="#exampleModal"
@@ -72,6 +77,7 @@ const RowInventory = ({ item }) => {
                             Edit
                           </button>
                           <button
+                            type="button"
                             className="btn btn-success btn-sm"
                             data-toggle="modal"
                             data-target="#exampleModal"
@@ -80,6 +86,7 @@ const RowInventory = ({ item }) => {
                             Add
                           </button>
                           <button
+                            type="button"
                             className="btn btn-danger btn-sm"
                             onClick={() => context.deleteItem(item._id)}
                           >

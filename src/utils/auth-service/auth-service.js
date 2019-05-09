@@ -19,6 +19,7 @@ export default class AuthService {
       return Promise.resolve(res)
     })
   }
+
   login = (email, password) => {
     // Get a token from api server using the fetch api
     return this.fetch(`${this.domain}/signin`, {
@@ -45,7 +46,8 @@ export default class AuthService {
       if (decoded.exp < Date.now() / 1000) {
         // Checking if token is expired. N
         return true
-      } else return false
+      }
+      return false
     } catch (err) {
       return false
     }
@@ -81,15 +83,18 @@ export default class AuthService {
     // Setting Authorization header
     // Authorization: Bearer xxxxxxx.xxxxxxxx.xxxxxx
     if (this.loggedIn()) {
-      headers['Authorization'] = 'Bearer ' + this.getToken()
+      headers.Authorization = `Bearer ${this.getToken()}`
     }
 
-    return fetch(url, {
-      headers,
-      ...options
-    })
-      .then(this._checkStatus)
-      .then(response => response.json())
+    return (
+      fetch(url, {
+        headers,
+        ...options
+      })
+        // eslint-disable-next-line no-underscore-dangle
+        .then(this._checkStatus)
+        .then(response => response.json())
+    )
   }
 
   _checkStatus = response => {
@@ -97,10 +102,9 @@ export default class AuthService {
     if (response.status >= 200 && response.status < 300) {
       // Success status lies between 200 to 300
       return response
-    } else {
-      var error = new Error(response.statusText)
-      error.response = response
-      throw error
     }
+    const error = new Error(response.statusText)
+    error.response = response
+    throw error
   }
 }

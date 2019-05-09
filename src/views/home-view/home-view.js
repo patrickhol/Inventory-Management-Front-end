@@ -4,7 +4,7 @@ import HomeList from '../../components/home-list/home-list'
 
 const HomeView = () => (
   <AppContext.Consumer>
-    {context => <HomeList item={context.item} />}
+    {context => <HomeList items={context.items} />}
   </AppContext.Consumer>
 )
 

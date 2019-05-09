@@ -1,9 +1,9 @@
 import React from 'react'
+import { Redirect } from 'react-router-dom'
 import AppContext from '../../context'
 import styles from './form-register.module.scss'
 import Input from '../input/input'
 import Title from '../title/title'
-import { Redirect } from 'react-router-dom'
 
 const types = {
   register: 'register'
@@ -64,7 +64,7 @@ class FormRegister extends React.Component {
                   label="Name"
                 />
 
-                <button>Register</button>
+                <button type="submit">Register</button>
               </form>
             </div>
           </>

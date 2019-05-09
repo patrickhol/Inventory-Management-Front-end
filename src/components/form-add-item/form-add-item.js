@@ -5,16 +5,16 @@ import Input from '../input/input'
 import Title from '../title/title'
 
 const types = {
-  item: 'item'
+  items: 'items'
 }
 
 const descriptions = {
-  item: 'Add New Item'
+  items: 'Add New Item'
 }
 
 class FormAddItem extends React.Component {
   state = {
-    type: types.item,
+    type: types.items,
     ean: 0,
     name: '',
     quantity: 0,
@@ -74,7 +74,7 @@ class FormAddItem extends React.Component {
                 required
               />
 
-              <button type="button">Add Item</button>
+              <button type="submit">Add Item</button>
             </form>
           </div>
         )}

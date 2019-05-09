@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-for */
 import React from 'react'
 import PropTypes from 'prop-types'
 import styles from './input.module.scss'
@@ -14,6 +15,7 @@ const Input = ({ name, maxLength, label, ...props }) => (
       placeholder=" "
       {...props}
     />
+
     <label className={styles.label} htmlFor={name}>
       {label}
     </label>
@@ -22,7 +24,6 @@ const Input = ({ name, maxLength, label, ...props }) => (
 )
 
 Input.propTypes = {
-  tag: PropTypes.string,
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   maxLength: PropTypes.number

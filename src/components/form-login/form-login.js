@@ -1,9 +1,9 @@
 import React from 'react'
+import { Redirect } from 'react-router-dom'
 import AppContext from '../../context'
 import styles from './form-login.module.scss'
 import Input from '../input/input'
 import Title from '../title/title'
-import { Redirect } from 'react-router-dom'
 
 const types = {
   login: 'login'
@@ -54,7 +54,7 @@ class FormLogin extends React.Component {
                   name="password"
                   label="Your Password"
                 />
-                <button>Login </button>
+                <button type="submit">Login </button>
               </form>
             </div>
           </>

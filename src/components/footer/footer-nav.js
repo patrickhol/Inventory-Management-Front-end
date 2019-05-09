@@ -1,6 +1,7 @@
 import React from 'react'
-import styles from './footer-nav.module.scss'
 import { NavLink } from 'react-router-dom'
+import styles from './footer-nav.module.scss'
+
 const FooterNav = () => (
   <nav>
     <ul className={styles.wrapper}>
