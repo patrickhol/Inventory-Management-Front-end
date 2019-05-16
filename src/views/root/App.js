@@ -26,7 +26,8 @@ class App extends Component {
     fetchItemData: false,
     isModalOpen: false,
     editItem: false,
-    loading: true
+    loading: true,
+    error: null
   }
 
   handleSubmitEditItem = (e, itemData, id, name, ean, quantity, price) => {
@@ -47,8 +48,7 @@ class App extends Component {
       price: inputPrice
     }
     const json = JSON.stringify(newItemData)
-    // console.log(json)
-    fetch(`/api/item/${id}`, {
+    fetch(`/api/v1/item/${id}`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
@@ -56,30 +56,39 @@ class App extends Component {
       method: 'PUT',
       body: json
     })
+      .then(response => {
+        if (response.ok) {
+          return response.json()
+        }
+        throw new Error('Something went wrong ...')
+      })
+      .then(() => {
+        const allItemFromStateMutable = [...items]
+        const editeOneItem = {
+          ...allItemFromStateMutable[showIndex],
+          name: inputName,
+          ean: inputEan,
+          quantity: inputQuantity,
+          price: inputPrice
+        }
 
-    const allItemFromStateMutable = [...items]
-    const editeOneItem = {
-      ...allItemFromStateMutable[showIndex],
-      name: inputName,
-      ean: inputEan,
-      quantity: inputQuantity,
-      price: inputPrice
-    }
+        allItemFromStateMutable[showIndex] = editeOneItem
 
-    allItemFromStateMutable[showIndex] = editeOneItem
-
-    this.setState({
-      items: allItemFromStateMutable,
-      isModalOpen: false,
-      editItem: false
-    })
+        this.setState({
+          items: allItemFromStateMutable,
+          isModalOpen: false,
+          editItem: false,
+          loading: false
+        })
+      })
+      .catch(error => this.setState({ error, loading: false }))
   }
 
   handleSubmitNewItem = (e, itemData) => {
     e.preventDefault()
 
     const json = JSON.stringify(itemData)
-    fetch('/api/item', {
+    fetch('/api/v1/item', {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
@@ -87,16 +96,23 @@ class App extends Component {
       method: 'POST',
       body: json
     })
-      .then(res => res.json())
+      .then(response => {
+        if (response.ok) {
+          return response.json()
+        }
+        throw new Error('Something went wrong ...')
+      })
       .then(data => {
         // eslint-disable-next-line no-param-reassign
         itemData._id = data.data._id
         this.setState(prevState => ({
           [itemData.type]: [...prevState[itemData.type], itemData],
           isModalOpen: false,
-          editItem: false
+          editItem: false,
+          loading: false
         }))
       })
+      .catch(error => this.setState({ error, loading: false }))
   }
 
   handleFormSubmit = (e, userData) => {
@@ -171,17 +187,25 @@ class App extends Component {
       // eslint-disable-next-line no-underscore-dangle
       .filter(item => item._id !== id)
 
-    fetch(`/api/item/${id}`, {
+    fetch(`/api/v1/item/${id}`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
       },
       method: 'DELETE'
-    }).then()
-
-    this.setState({
-      items: newItemsState
     })
+      .then(response => {
+        if (response.ok) {
+          return response.json()
+        }
+        throw new Error('Something went wrong ...')
+      })
+      .then(
+        this.setState({
+          items: newItemsState
+        })
+      )
+      .catch(error => this.setState({ error, loading: false }))
   }
 
   closeModal = () => {
@@ -192,14 +216,20 @@ class App extends Component {
   }
 
   fetchItemDataNow = () => {
-    fetch('/api/item')
-      .then(res => res.json())
+    fetch('/api/v1/item')
+      .then(response => {
+        if (response.ok) {
+          return response.json()
+        }
+        throw new Error('Something went wrong ...')
+      })
       .then(data =>
         this.setState({
           items: data.data,
           loading: false
         })
       )
+      .catch(error => this.setState({ error, loading: false }))
 
     this.handleIsLogged()
   }
@@ -213,8 +243,13 @@ class App extends Component {
     const { fetchItemData, isLogged } = this.state
 
     if (!fetchItemData && isLogged) {
-      fetch('/api/item')
-        .then(res => res.json())
+      fetch('/api/v1/item')
+        .then(response => {
+          if (response.ok) {
+            return response.json()
+          }
+          throw new Error('Something went wrong ...')
+        })
         .then(data =>
           this.setState({
             items: data.data,
@@ -222,6 +257,7 @@ class App extends Component {
             fetchItemData: true
           })
         )
+        .catch(error => this.setState({ error, loading: false }))
     }
   }
 
