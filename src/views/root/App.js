@@ -154,7 +154,7 @@ class App extends Component {
     })
 
     // eslint-disable-next-line no-underscore-dangle
-    const editingItem = items.map(item => item).filter(item => item._id === id)
+    const editingItem = items.filter(item => item._id === id)
 
     this.setState({
       editingItem
@@ -173,7 +173,7 @@ class App extends Component {
       editItem: true
     })
     // eslint-disable-next-line no-underscore-dangle
-    const editingItem = items.map(item => item).filter(item => item._id === id)
+    const editingItem = items.filter(item => item._id === id)
 
     this.setState({
       editingItem
@@ -183,7 +183,6 @@ class App extends Component {
   deleteItem = id => {
     const { items } = this.state
     const newItemsState = items
-      .map(item => item)
       // eslint-disable-next-line no-underscore-dangle
       .filter(item => item._id !== id)
 
